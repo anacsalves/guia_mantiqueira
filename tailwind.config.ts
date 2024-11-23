@@ -12,7 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         "green":{
-          "light": "#DBDCCA",
+          "light": "#E2F5EE",
           "regular": "#649181",
           "dark": "#0D2223"
         } 

@@ -2,20 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Futura';
+  src: url('/mantiqueira/src/app/fonts/FuturaMediumCondensedBT.ttf') format('truetype'),
+       url('/mantiqueira/src/app/fonts/FuturaBold.ttf') format('truetype');
+  font-weight: 400; /* Ajuste conforme necessário */
+  font-style: normal; /* Ou 'italic', se aplicável */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}

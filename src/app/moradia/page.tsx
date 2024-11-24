@@ -1,21 +1,52 @@
-// pages/moradia.tsx
-'use client';
+"use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BaseLayoutTelas from "../components/Generico/BaseLayoutTelas";
-import Card from "../components/Generico/Card";
 import Filtro from "../components/Generico/Filtro";
-import Modal from "./Modal";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css"; // Importa o CSS do Swiper
+import "swiper/css/navigation"; // CSS para os botões de navegação
+import "swiper/css/pagination"; // CSS para paginação
+import { Navigation, Pagination } from "swiper/modules";
 
 export default function Moradia() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
   const [subCategoria, setSubCategoria] = useState("Todos");
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
+  const [moradiaData, setMoradiaData] = useState<any>(null);
 
-  const categorias = ["Todos", "Casas", "Pensões/Kitnets"];
-  const subCategorias = ["Todos", "Aluguel", "Venda"];
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // Buscar dados da API ao carregar a página
+  useEffect(() => {
+    fetch(`${apiUrl}/api/moradia`)
+      .then((res) => res.json())
+      .then((data) => setMoradiaData(data));
+  }, []);
+
+  if (!moradiaData) {
+    return <p>Carregando...</p>;
+  }
+
+  // Filtrar os itens com base no filtro aplicado
+  const itensFiltrados = moradiaData.itens.filter((item: any) => {
+    const categoriaMatch = categoria === "Todos" || item.categoria === categoria;
+    const subCategoriaMatch =
+      subCategoria === "Todos" || item.subCategoria === subCategoria;
+    const queryMatch =
+      query === "" ||
+      item.nome.toLowerCase().includes(query.toLowerCase()) ||
+      item.descricao.toLowerCase().includes(query.toLowerCase());
+
+    return categoriaMatch && subCategoriaMatch && queryMatch;
+  });
+
+  // Determinar as categorias a serem exibidas com base nos itens filtrados
+  const categoriasExibidas = categoria === "Todos"
+    ? moradiaData.categoria
+    : moradiaData.categoria.filter((cat: string) =>
+        itensFiltrados.some((item: any) => item.categoria === cat)
+      );
 
   const openModal = () => setIsModalOpen(true); // Função para abrir o modal
   const closeModal = () => setIsModalOpen(false); // Função para fechar o modal
@@ -27,49 +58,58 @@ export default function Moradia() {
     >
       {/* Passando o botão "Anuncie sua vaga" que ao ser clicado abre o modal */}
       <Filtro
-        categorias={categorias}
-        subCategorias={subCategorias}
+        categorias={moradiaData.categoria}
+        subCategorias={moradiaData.subCategoria}
         onSearch={setQuery}
-        onCategoriaChange={setCategoria}
-        onSubCategoriaChange={setSubCategoria} 
+        onCategoriaChange={(cat) => {
+          setCategoria(cat);
+          setSubCategoria("Todos");
+        }}
+        onSubCategoriaChange={setSubCategoria}
         buttonText={"Anuncie sua vaga"}
         onButtonClick={openModal} // Função que abre o modal
       />
 
-      {/* Modal que aparece quando o estado `isModalOpen` é verdadeiro */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} />
-
-      {/* Sessão de Casas */}
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Casas</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Aluguel"
-            description="CEP: 00000-000. Rua das Flores, 123."
-            price="R$ 1500,00"
-          />
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Venda"
-            description="CEP: 00000-000. Rua das Flores, 123."
-            price="R$ 1200,00"
-          />
-        </div>
-      </section>
-
-      {/* Sessão de Kitnets */}
-      <section>
-        <h2 className="text-xl font-bold mb-4">Pensões/Kitnets</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Pensão das Moças"
-            description="CEP: 00000-000. Rua das Flores, 123."
-            price="R$ 900,00 - R$ 1500,00"
-          />
-        </div>
-      </section>
+      {/* Listar os itens filtrados */}
+      {categoriasExibidas.map((categoriaExibida: string) => (
+        <section key={categoriaExibida} className="mb-8">
+          <h2 className="text-xl font-bold mb-4">{categoriaExibida}</h2>
+          <Swiper
+            spaceBetween={20} // Espaço entre os slides
+            slidesPerView={1} // Quantos slides aparecem por vez
+            navigation // Botões de navegação
+            pagination={{ clickable: true }} // Paginação clicável
+            breakpoints={{
+              640: {
+                slidesPerView: 2, // Exibe 2 slides em telas maiores que 640px
+              },
+              1024: {
+                slidesPerView: 3, // Exibe 3 slides em telas maiores que 1024px
+              },
+            }}
+            modules={[Navigation, Pagination]} // Ativa os módulos de navegação/paginação
+          >
+            {itensFiltrados
+              .filter((item: any) => item.categoria === categoriaExibida)
+              .map((item: any) => (
+                <SwiperSlide key={item.id}>
+                  <div className="shadow-lg rounded-lg overflow-hidden">
+                    <img
+                      src={item.imagem}
+                      alt={item.nome}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 bg-green-light">
+                      <h3 className="text-lg font-bold">{item.nome}</h3>
+                      <p className="text-sm text-gray-600">{item.descricao}</p>
+                      <p className="text-green-dark font-bold">{item.preco}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </section>
+      ))}
     </BaseLayoutTelas>
   );
 }

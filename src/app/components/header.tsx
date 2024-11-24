@@ -11,19 +11,23 @@ export default function Header() {
 
   const navigateTo = (path: string) => {
     router.push(path);
-    setMenuOpen(false); 
+    setMenuOpen(false);
   };
 
   return (
-    <header className="w-full bg-green-light shadow-md">
-      <nav className="container mx-auto flex items-center justify-between h-24 px-4">
+    <header className="w-full bg-green-light shadow-md z-10 relative">
+      <nav className="container mx-auto flex items-center justify-between h-24 px-4 relative">
         {/* Logotipo */}
         <div
           onClick={() => navigateTo("/")}
           className="cursor-pointer flex items-center gap-4"
         >
-          <Image src={logo} alt="Imagem circular com montanhas que remetem a Itajubá" className="w-24"/>
-          <h1 className="font-carolloMedium text-[28px]">Guia da Mantiqueira</h1>
+          <Image
+            src={logo}
+            alt="Imagem circular com montanhas que remetem a Itajubá"
+            className="w-24"
+          />
+          <h1 className="font-carolloMedium">Guia da Mantiqueira</h1>
         </div>
 
         {/* Botão de menu hambúrguer para telas pequenas */}
@@ -42,7 +46,11 @@ export default function Header() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              d={
+                menuOpen
+                  ? "M6 18L18 6M6 6l12 12"
+                  : "M4 6h16M4 12h16M4 18h16"
+              }
             />
           </svg>
         </button>
@@ -51,7 +59,7 @@ export default function Header() {
         <ul
           className={`${
             menuOpen ? "block" : "hidden"
-          } absolute md:relative left-0 w-full md:w-auto bg-green-light md:bg-transparent md:flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-gray-600 p-4 md:p-0`}
+          } absolute md:relative top-24 md:top-auto left-0 w-full md:w-auto bg-green-light md:bg-transparent md:flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-gray-600 p-4 md:p-0 z-10 shadow-lg md:shadow-none transition-all duration-300`}
         >
           <li>
             <button

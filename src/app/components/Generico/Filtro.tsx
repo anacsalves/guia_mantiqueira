@@ -7,7 +7,7 @@ interface FiltroProps {
   onCategoriaChange: (categoria: string) => void; // Callback para selecionar categoria
   onSubCategoriaChange?: (subCategoria: string) => void; // Callback para subcategoria (opcional)
   buttonText: string; // Texto do botão
-  onButtonClick: () => void; // Função que será chamada ao clicar no botão
+  onButtonClick?: () => void; // Função que será chamada ao clicar no botão
 }
 
 export default function Filtro({

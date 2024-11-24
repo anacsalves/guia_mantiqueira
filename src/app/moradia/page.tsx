@@ -48,9 +48,6 @@ export default function Moradia() {
         itensFiltrados.some((item: any) => item.categoria === cat)
       );
 
-  const openModal = () => setIsModalOpen(true); // Função para abrir o modal
-  const closeModal = () => setIsModalOpen(false); // Função para fechar o modal
-
   return (
     <BaseLayoutTelas
       title="Moradia"
@@ -67,7 +64,6 @@ export default function Moradia() {
         }}
         onSubCategoriaChange={setSubCategoria}
         buttonText={"Anuncie sua vaga"}
-        onButtonClick={openModal} // Função que abre o modal
       />
 
       {/* Listar os itens filtrados */}

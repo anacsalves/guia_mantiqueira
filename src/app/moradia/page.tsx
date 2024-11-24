@@ -9,6 +9,7 @@ import "swiper/css/navigation"; // CSS para os botões de navegação
 import "swiper/css/pagination"; // CSS para paginação
 import { Navigation, Pagination } from "swiper/modules";
 
+
 export default function Moradia() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
@@ -48,8 +49,7 @@ export default function Moradia() {
         itensFiltrados.some((item: any) => item.categoria === cat)
       );
 
-  const openModal = () => setIsModalOpen(true); // Função para abrir o modal
-  const closeModal = () => setIsModalOpen(false); // Função para fechar o modal
+
 
   return (
     <BaseLayoutTelas
@@ -67,7 +67,6 @@ export default function Moradia() {
         }}
         onSubCategoriaChange={setSubCategoria}
         buttonText={"Anuncie sua vaga"}
-        onButtonClick={openModal} // Função que abre o modal
       />
 
       {/* Listar os itens filtrados */}

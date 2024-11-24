@@ -1,8 +1,8 @@
 // components/Generico/Modal.tsx
 import { useState } from "react";
 import Image from "next/image";
-import casa from "../../assets/img/casa.png"
-import relogio from "../../assets/img/Frame.png"
+import casa from "../../../assets/img/casa.png"
+import relogio from "../../../assets/img/Frame.png"
 
 const Modal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   if (!isOpen) return null; 

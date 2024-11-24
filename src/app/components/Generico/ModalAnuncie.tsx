@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,6 +6,96 @@ interface ModalProps {
 }
 
 const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const [formData, setFormData] = useState({
+    tipoMoradia: "",
+    aluguel: false,
+    venda: false,
+    cep: "",
+    rua: "",
+    numero: "",
+    precoMinimo: "",
+    precoMaximo: "",
+    nomeResponsavel: "",
+    telefoneResponsavel: "",
+    tamanho: "",
+    quartos: 0,
+    banheiros: 0,
+    vagasGaragem: 0,
+    condominio: "",
+    iptu: "",
+    aceitaPets: false,
+    portaoEletronico: false,
+    descricao: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+
+    if (type === "checkbox") {
+      const { checked } = e.target as HTMLInputElement;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3001/api/anuncie", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Enviar os dados como JSON
+      });
+
+      if (response.ok) {
+        alert("Dados enviados com sucesso!");
+        onClose();
+        setFormData({
+          tipoMoradia: "",
+          aluguel: false,
+          venda: false,
+          cep: "",
+          rua: "",
+          numero: "",
+          precoMinimo: "",
+          precoMaximo: "",
+          nomeResponsavel: "",
+          telefoneResponsavel: "",
+          tamanho: "",
+          quartos: 0,
+          banheiros: 0,
+          vagasGaragem: 0,
+          condominio: "",
+          iptu: "",
+          aceitaPets: false,
+          portaoEletronico: false,
+          descricao: "",
+        });
+      } else {
+        const error = await response.json();
+        console.error("Erro no backend:", error.message);
+        alert("Erro ao enviar os dados.");
+      }
+    } catch (error) {
+      console.error("Erro ao conectar com a API:", error);
+      alert("Erro ao conectar com o servidor.");
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -28,25 +118,40 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </p>
 
         {/* Formulário */}
-        <form>
+        <form onSubmit={handleSubmit}>
           {/* Linha 1: Tipo de moradia e opções */}
           <div className="grid grid-cols-3 gap-4 mb-4">
             <select
+              name="tipoMoradia"
+              value={formData.tipoMoradia}
+              onChange={handleChange}
               className="col-span-2 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option>Selecione o tipo de moradia</option>
-              <option>Casa</option>
-              <option>Apartamento</option>
-              <option>Pensões/kitnet</option>
-              <option>República</option>
+              <option value="">Selecione o tipo de moradia</option>
+              <option value="Casa">Casa</option>
+              <option value="Apartamento">Apartamento</option>
+              <option value="Pensões/kitnet">Pensões/kitnet</option>
+              <option value="República">República</option>
             </select>
             <div className="flex items-center space-x-4">
               <label className="flex items-center space-x-1">
-                <input type="checkbox" className="form-checkbox" />
+                <input
+                  type="checkbox"
+                  name="aluguel"
+                  checked={formData.aluguel}
+                  onChange={handleChange}
+                  className="form-checkbox"
+                />
                 <span>Aluguel</span>
               </label>
               <label className="flex items-center space-x-1">
-                <input type="checkbox" className="form-checkbox" />
+                <input
+                  type="checkbox"
+                  name="venda"
+                  checked={formData.venda}
+                  onChange={handleChange}
+                  className="form-checkbox"
+                />
                 <span>Venda</span>
               </label>
             </div>
@@ -56,16 +161,25 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-12 gap-4 mb-4">
             <input
               type="text"
+              name="cep"
+              value={formData.cep}
+              onChange={handleChange}
               placeholder="Cep"
               className="col-span-3 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
+              name="rua"
+              value={formData.rua}
+              onChange={handleChange}
               placeholder="Rua"
               className="col-span-6 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
+              name="numero"
+              value={formData.numero}
+              onChange={handleChange}
               placeholder="Nº"
               className="col-span-3 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
@@ -75,11 +189,17 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
               type="text"
+              name="precoMinimo"
+              value={formData.precoMinimo}
+              onChange={handleChange}
               placeholder="Preço mínimo"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
+              name="precoMaximo"
+              value={formData.precoMaximo}
+              onChange={handleChange}
               placeholder="Preço máximo"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
@@ -89,11 +209,17 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
               type="text"
+              name="nomeResponsavel"
+              value={formData.nomeResponsavel}
+              onChange={handleChange}
               placeholder="Nome do responsável"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
+              name="telefoneResponsavel"
+              value={formData.telefoneResponsavel}
+              onChange={handleChange}
               placeholder="Telefone do responsável"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
@@ -103,35 +229,73 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-4 gap-4 mb-4">
             <input
               type="text"
+              name="tamanho"
+              value={formData.tamanho || ""} // Exibe o placeholder quando o valor for vazio
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  tamanho: e.target.value, // Mantém como string
+                }))
+              }
               placeholder="Tamanho em m²"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="number"
+              name="quartos"
+              value={formData.quartos || ""} // Exibe o placeholder quando o valor for vazio
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  quartos: e.target.value === "" ? 0 : parseInt(e.target.value, 10), // Garante número no estado
+                }))
+              }
               placeholder="Nº de quartos"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="number"
+              name="banheiros"
+              value={formData.banheiros || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  banheiros: e.target.value === "" ? 0 : parseInt(e.target.value, 10), // Garante número no estado
+                }))
+              }
               placeholder="Nº de banheiros"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
-            <input
-              type="number"
-              placeholder="Nº vagas de garagem"
-              className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+           <input
+            type="number"
+            name="vagasGaragem"
+            value={formData.vagasGaragem === 0 ? "" : formData.vagasGaragem} // Exibe placeholder quando o valor for 0
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                vagasGaragem: e.target.value === "" ? 0 : parseInt(e.target.value, 10), // Garante número no estado
+              }))
+            }
+            placeholder="Nº vagas de garagem"
+            className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
+          />
           </div>
 
           {/* Linha 6: Condomínio e IPTU */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
               type="text"
+              name="condominio"
+              value={formData.condominio}
+              onChange={handleChange}
               placeholder="Condomínio"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
+              name="iptu"
+              value={formData.iptu}
+              onChange={handleChange}
               placeholder="IPTU"
               className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
@@ -140,17 +304,32 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           {/* Linha 7: Opções adicionais */}
           <div className="flex items-center space-x-4 mb-4">
             <label className="flex items-center space-x-1">
-              <input type="checkbox" className="form-checkbox" />
+              <input
+                type="checkbox"
+                name="aceitaPets"
+                checked={formData.aceitaPets}
+                onChange={handleChange}
+                className="form-checkbox"
+              />
               <span>Aceita pets</span>
             </label>
             <label className="flex items-center space-x-1">
-              <input type="checkbox" className="form-checkbox" />
+              <input
+                type="checkbox"
+                name="portaoEletronico"
+                checked={formData.portaoEletronico}
+                onChange={handleChange}
+                className="form-checkbox"
+              />
               <span>Portão eletrônico</span>
             </label>
           </div>
 
           {/* Linha 8: Descrição */}
           <textarea
+            name="descricao"
+            value={formData.descricao}
+            onChange={handleChange}
             placeholder="Descrição"
             className="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 resize-none"
             rows={3}
@@ -161,9 +340,9 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="text-right">
             <button
               type="submit"
-              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+              className="px-6 py-2 bg-green-regular text-white rounded-lg hover:bg-green-600 transition"
             >
-              Próximo
+              Enviar
             </button>
           </div>
         </form>

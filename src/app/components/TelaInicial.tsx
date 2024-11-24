@@ -63,7 +63,7 @@ export default function TelaInicial() {
         <div className="absolute inset-0 bg-black bg-opacity-50 -z-10"></div>
 
         {/* Card Transparente */}
-        <div className="relative px-24 my-24 bg-white bg-opacity-80 backdrop-blur-lg rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <div className="relative px-12 my-12 md:px-24 md:my-24 bg-white bg-opacity-80 backdrop-blur-lg rounded-lg shadow-lg flex flex-col items-center justify-center">
           {/* Imagem no Card */}
           <Image
             src={logoTexto}
@@ -72,7 +72,7 @@ export default function TelaInicial() {
             height={250}
             className="rounded-lg mb-4"
           />
-          <p className="text-gray-700 text-center text-3xl mb-4">
+          <p className="text-gray-700 text-center text-2xl md:text-3xl mb-4">
             Seu ponto de encontro para morar <br /> e viver bem em Itajubá.
           </p>
         </div>

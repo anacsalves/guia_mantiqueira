@@ -1,18 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import logo from "../../assets/img/Logo-apenas-imagem.png";
 import Image from "next/image";
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname(); // Hook para obter a rota atual
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigateTo = (path: string) => {
     router.push(path);
     setMenuOpen(false);
   };
+
+  const isActive = (path: string) => pathname === path; // Verifica se a rota está ativa
 
   return (
     <header className="w-full bg-green-light shadow-md z-50 fixed top-0 left-0">
@@ -27,7 +30,7 @@ export default function Header() {
             alt="Imagem circular com montanhas que remetem a Itajubá"
             className="w-24"
           />
-          <h1 className="font-carolloMedium">Guia da Mantiqueira</h1>
+          <h1 className="hidden lg:flex font-carolloMedium">Guia da Mantiqueira</h1>
         </div>
 
         {/* Botão de menu hambúrguer para telas pequenas */}
@@ -64,7 +67,9 @@ export default function Header() {
           <li>
             <button
               onClick={() => navigateTo("/")}
-              className="hover:text-green-dark focus:outline-none"
+              className={`${
+                isActive("/") ? "text-green-regular underline" : ""
+              } hover:text-green-regular focus:outline-none`}
             >
               Início
             </button>
@@ -72,7 +77,9 @@ export default function Header() {
           <li>
             <button
               onClick={() => navigateTo("/moradia")}
-              className="hover:text-green-dark focus:outline-none"
+              className={`${
+                isActive("/moradia") ? "text-green-regular underline" : ""
+              } hover:text-green-regular focus:outline-none`}
             >
               Moradia
             </button>
@@ -80,7 +87,9 @@ export default function Header() {
           <li>
             <button
               onClick={() => navigateTo("/alimentacao")}
-              className="hover:text-green-dark focus:outline-none"
+              className={`${
+                isActive("/alimentacao") ? "text-green-regular underline" : ""
+              } hover:text-green-regular focus:outline-none`}
             >
               Alimentação
             </button>
@@ -88,7 +97,9 @@ export default function Header() {
           <li>
             <button
               onClick={() => navigateTo("/educacao")}
-              className="hover:text-green-dark focus:outline-none"
+              className={`${
+                isActive("/educacao") ? "text-green-regular underline" : ""
+              } hover:text-green-regular focus:outline-none`}
             >
               Educação
             </button>
@@ -96,7 +107,9 @@ export default function Header() {
           <li>
             <button
               onClick={() => navigateTo("/saude")}
-              className="hover:text-green-dark focus:outline-none"
+              className={`${
+                isActive("/saude") ? "text-green-regular underline" : ""
+              } hover:text-green-regular focus:outline-none`}
             >
               Saúde
             </button>

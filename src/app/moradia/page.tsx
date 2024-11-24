@@ -49,8 +49,6 @@ export default function Moradia() {
         itensFiltrados.some((item: any) => item.categoria === cat)
       );
 
-
-
   return (
     <BaseLayoutTelas
       title="Moradia"

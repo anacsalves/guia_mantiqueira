@@ -1,73 +1,103 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BaseLayoutTelas from "../components/Generico/BaseLayoutTelas";
 import Filtro from "../components/Generico/Filtro";
-import Card from "../components/Generico/Card";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css"; // Importa o CSS base do Swiper
+import "swiper/css/navigation"; // Importa o CSS para navegação
+import "swiper/css/pagination"; // Importa o CSS para paginação
+import { Navigation, Pagination } from "swiper/modules";
 
 export default function Educacao() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
+  const [educacaoData, setEducacaoData] = useState<any>(null);
 
-  const categorias = ["Todos", "Educação Infantil", "Ensino Fundamental", "Ensino Médio", "Ensino Superior"];
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // Buscar dados da API ao carregar a página
+  useEffect(() => {
+    fetch(`${apiUrl}/api/educacao`)
+      .then((res) => res.json())
+      .then((data) => setEducacaoData(data));
+  }, []);
+
+  if (!educacaoData) {
+    return <p>Carregando...</p>;
+  }
+
+  // Filtrar os itens com base no filtro aplicado
+  const itensFiltrados = educacaoData.itens.filter((item: any) => {
+    const categoriaMatch =
+      categoria === "Todos" || item.categoria === categoria;
+    const queryMatch =
+      query === "" ||
+      item.nome.toLowerCase().includes(query.toLowerCase()) ||
+      item.descricao.toLowerCase().includes(query.toLowerCase());
+
+    return categoriaMatch && queryMatch;
+  });
+
+  // Determinar as categorias a serem exibidas com base nos itens filtrados
+  const categoriasExibidas = educacaoData.categoria.filter((categoria: string) =>
+    itensFiltrados.some((item: any) => item.categoria === categoria)
+  );
 
   return (
     <BaseLayoutTelas
       title="Educação"
       description="Encontre as melhores opções de educação em Itajubá: escolas públicas e privadas, ensino infantil, fundamental e médio. Educação de qualidade para todas as idades."
     >
-      {/* Filtro */}
       <Filtro
-        categorias={categorias}
+        categorias={educacaoData.categoria}
         onSearch={setQuery}
         onCategoriaChange={setCategoria}
-        buttonText="Anuncie sua escola"
+        buttonText={"Adicione uma escola"}
       />
 
-      {/* Conteúdo Filtrado */}
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Educação Infantil</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Escola Arca da Noé"
-            description="CEP: 00000-000. Rua das Flores, 123."
-          />
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Ensino Fundamental</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Escola São Vicente"
-            description="CEP: 00000-000. Rua das Flores, 123."
-          />
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Ensino Médio</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="E.E. Major João Pereira"
-            description="CEP: 00000-000. Rua das Flores, 123."
-          />
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Ensino Superior</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            imageSrc="/assets/img/casa.png"
-            title="Universidade XYZ"
-            description="CEP: 00000-000. Rua das Flores, 123."
-          />
-        </div>
-      </section>
+      {/* Listar os itens filtrados */}
+      {categoriasExibidas.map((categoriaExibida: string) => (
+        <section key={categoriaExibida} className="mb-8">
+          <h2 className="text-xl font-bold mb-4">{categoriaExibida}</h2>
+          <Swiper
+            spaceBetween={20} // Espaço entre os slides
+            slidesPerView={1} // Slides visíveis por vez
+            navigation // Ativa os botões de navegação
+            pagination={{ clickable: true }} // Ativa a paginação clicável
+            breakpoints={{
+              640: {
+                slidesPerView: 2, // Exibe 2 slides em telas maiores que 640px
+              },
+              1024: {
+                slidesPerView: 3, // Exibe 3 slides em telas maiores que 1024px
+              },
+            }}
+            modules={[Navigation, Pagination]} // Ativa os módulos do Swiper
+          >
+            {itensFiltrados
+              .filter((item: any) => item.categoria === categoriaExibida)
+              .map((item: any) => (
+                <SwiperSlide key={item.id}>
+                  <div className="shadow-lg rounded-lg overflow-hidden">
+                    <img
+                      src={item.imagem}
+                      alt={item.nome}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 bg-green-light">
+                      <h3 className="text-lg font-bold">{item.nome}</h3>
+                      <p className="text-sm text-gray-600">{item.descricao}</p>
+                      {item.preco && (
+                        <p className="text-green-dark font-bold">{item.preco}</p>
+                      )}
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </section>
+      ))}
     </BaseLayoutTelas>
   );
 }

@@ -25,6 +25,7 @@ export default function Filtro({
           className="border rounded-2xl px-4 py-2 text-gray-600"
           onChange={(e) => onCategoriaChange(e.target.value)}
         >
+          <option value="Todos">Todos</option> {/* Adiciona a opção 'Todos' */}
           {categorias.map((categoria) => (
             <option key={categoria} value={categoria}>
               {categoria}
@@ -38,6 +39,7 @@ export default function Filtro({
             className="border rounded-2xl px-4 py-2 text-gray-600"
             onChange={(e) => onSubCategoriaChange?.(e.target.value)}
           >
+            <option value="Todos">Todos</option> {/* Adiciona a opção 'Todos' */}
             {subCategorias.map((subCategoria) => (
               <option key={subCategoria} value={subCategoria}>
                 {subCategoria}
@@ -57,7 +59,7 @@ export default function Filtro({
         />
       </div>
 
-      {/* Botão */}
+      {/* Botão Principal */}
       <button className="bg-green-regular text-white px-6 py-2 rounded-2xl hover:bg-green-dark">
         {buttonText}
       </button>

@@ -15,7 +15,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full bg-green-light shadow-md z-10 relative">
+    <header className="w-full bg-green-light shadow-md z-50 fixed top-0 left-0">
       <nav className="container mx-auto flex items-center justify-between h-24 px-4 relative">
         {/* Logotipo */}
         <div

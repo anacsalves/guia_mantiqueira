@@ -8,13 +8,14 @@ import "swiper/css"; // Importa o CSS do Swiper
 import "swiper/css/navigation"; // CSS para os botões de navegação
 import "swiper/css/pagination"; // CSS para paginação
 import { Navigation, Pagination } from "swiper/modules";
-
+import ModalAnuncie from "../components/Generico/ModalAnuncie";
 
 export default function Moradia() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
   const [subCategoria, setSubCategoria] = useState("Todos");
   const [moradiaData, setMoradiaData] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controle do modal
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,7 +32,8 @@ export default function Moradia() {
 
   // Filtrar os itens com base no filtro aplicado
   const itensFiltrados = moradiaData.itens.filter((item: any) => {
-    const categoriaMatch = categoria === "Todos" || item.categoria === categoria;
+    const categoriaMatch =
+      categoria === "Todos" || item.categoria === categoria;
     const subCategoriaMatch =
       subCategoria === "Todos" || item.subCategoria === subCategoria;
     const queryMatch =
@@ -43,11 +45,16 @@ export default function Moradia() {
   });
 
   // Determinar as categorias a serem exibidas com base nos itens filtrados
-  const categoriasExibidas = categoria === "Todos"
-    ? moradiaData.categoria
-    : moradiaData.categoria.filter((cat: string) =>
-        itensFiltrados.some((item: any) => item.categoria === cat)
-      );
+  const categoriasExibidas =
+    categoria === "Todos"
+      ? moradiaData.categoria
+      : moradiaData.categoria.filter((cat: string) =>
+          itensFiltrados.some((item: any) => item.categoria === cat)
+        );
+
+  // Funções para abrir e fechar o modal
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <BaseLayoutTelas
@@ -65,7 +72,11 @@ export default function Moradia() {
         }}
         onSubCategoriaChange={setSubCategoria}
         buttonText={"Anuncie sua vaga"}
+        onButtonClick={openModal} // Passa a função para abrir o modal
       />
+
+      {/* Modal para anúncio */}
+      {isModalOpen && <ModalAnuncie onClose={closeModal} isOpen={isModalOpen} />}
 
       {/* Listar os itens filtrados */}
       {categoriasExibidas.map((categoriaExibida: string) => (

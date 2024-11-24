@@ -22,3 +22,7 @@ h1 {
 p {
   font-size: 1rem; 
 }
+
+main {
+  margin-top: 60px; /* Ajuste este valor de acordo com a altura do Header */
+}

@@ -12,10 +12,10 @@ export default function BaseLayoutTelas({
   children,
 }: BaseLayoutTelasProps) {
   return (
-    <div className="px-4 lg:px-8 py-6">
+    <div className="px-4 lg:px-8 py-6 mt-28">
       {/* Cabeçalho */}
       <header className="mb-6 text-center">
-        <h1 className="font-futuraMedium font-medium text-3xl text-green-dark">{title}</h1>
+        <h1 className="font-futuraMedium font-medium text-4xl text-green-dark">{title}</h1>
         <p className="text-gray-dark mt-2">{description}</p>
       </header>
 

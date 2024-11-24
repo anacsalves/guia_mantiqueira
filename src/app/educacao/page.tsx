@@ -53,7 +53,6 @@ export default function Educacao() {
         categorias={educacaoData.categoria}
         onSearch={setQuery}
         onCategoriaChange={setCategoria}
-        buttonText={"Adicione uma escola"}
       />
 
       {/* Listar os itens filtrados */}

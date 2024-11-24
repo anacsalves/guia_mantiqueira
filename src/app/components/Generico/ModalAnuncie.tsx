@@ -9,8 +9,8 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg w-full max-w-4xl relative">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-8 rounded-lg w-full max-w-4xl max-h-[640px] relative overflow-auto">
         {/* Botão Fechar */}
         <button
           onClick={onClose}
@@ -20,10 +20,10 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </button>
 
         {/* Conteúdo do Modal */}
-        <h2 className="font-futuraMedium font-medium  text-3xl font-semibold text-green-dark text-center mb-2">
+        <h2 className="font-futuraMedium text-3xl font-semibold text-green-dark text-center mb-2">
           Anuncie sua vaga
         </h2>
-        <p className="font-futuraMedium font-medium  text-center text-2xl text-gray-600 mb-6">
+        <p className="font-futuraMedium font-medium text-center text-2xl text-gray-600 mb-6">
           Iremos analisar sua solicitação e retornar em até 7 dias
         </p>
 
@@ -39,7 +39,6 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               <option>Apartamento</option>
               <option>Pensões/kitnet</option>
               <option>República</option>
-
             </select>
             <div className="flex items-center space-x-4">
               <label className="flex items-center space-x-1">
@@ -151,13 +150,12 @@ const ModalAnuncie: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Linha 8: Descrição */}
-            <textarea
+          <textarea
             placeholder="Descrição"
             className="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 resize-none"
             rows={3}
             style={{ maxHeight: "100px", minHeight: "80px" }}
-            ></textarea>
-
+          ></textarea>
 
           {/* Botão de envio */}
           <div className="text-right">

@@ -6,7 +6,7 @@ interface FiltroProps {
   onSearch: (query: string) => void; // Callback para buscar
   onCategoriaChange: (categoria: string) => void; // Callback para selecionar categoria
   onSubCategoriaChange?: (subCategoria: string) => void; // Callback para subcategoria (opcional)
-  buttonText: string; // Texto do botão
+  buttonText?: string; // Texto do botão
   onButtonClick?: () => void; // Função que será chamada ao clicar no botão
 }
 
@@ -17,10 +17,10 @@ export default function Filtro({
   onCategoriaChange,
   onSubCategoriaChange,
   buttonText,
-  onButtonClick, // Recebendo a função para abrir o modal
+  onButtonClick,
 }: FiltroProps) {
   return (
-    <div className="flex flex-wrap items-center justify-between mb-8 p-4 shadow-sm">
+    <div className="flex flex-wrap items-center justify-between mb-8 p-4 shadow-sm gap-4">
       {/* Filtro por Categoria */}
       <div className="flex space-x-4">
         <select
@@ -52,7 +52,7 @@ export default function Filtro({
       </div>
 
       {/* Barra de Pesquisa */}
-      <div className="flex-grow mx-4">
+      <div className="flex-grow w-full sm:w-auto">
         <input
           type="text"
           placeholder="Busque por rua, bairro..."
@@ -62,10 +62,16 @@ export default function Filtro({
       </div>
 
       {/* Botão Principal */}
-      <button className="bg-green-regular text-white px-6 py-2 rounded-2xl hover:bg-green-dark">
-        {buttonText}
-      </button>
+      {buttonText && onButtonClick && (
+        <div className="w-full sm:w-auto">
+          <button
+            className="w-full sm:w-auto bg-green-regular text-white px-6 py-2 rounded-2xl hover:bg-green-dark"
+            onClick={onButtonClick}
+          >
+            {buttonText}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-

@@ -53,8 +53,9 @@ export default function Alimentacao() {
         categorias={alimentacaoData.categoria}
         onSearch={setQuery}
         onCategoriaChange={setCategoria}
-        buttonText={"Anuncie seu negócio"}
-      />
+        buttonText={"Anuncie seu negócio"} onButtonClick={function (): void {
+          throw new Error("Function not implemented.");
+        } }      />
 
       {/* Listar os itens filtrados */}
       {categoriasExibidas.map((categoriaExibida: string) => (

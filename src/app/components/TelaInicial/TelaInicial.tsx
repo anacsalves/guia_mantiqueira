@@ -1,7 +1,7 @@
 import Image from "next/image"
-import fundo from "../../assets/img/fundo.png"
-import unifei from "../../assets/img/unifei.png"
-import casa from "../../assets/img/casa.png"
+import fundo from "../../../assets/img/fundo.png"
+import unifei from "../../../assets/img/unifei.png"
+import casa from "../../../assets/img/casa.png"
 
 
 export default function TelaInicial(){

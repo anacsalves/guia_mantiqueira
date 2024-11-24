@@ -4,13 +4,20 @@ import { useState } from "react";
 import BaseLayoutTelas from "../components/Generico/BaseLayoutTelas";
 import Card from "../components/Generico/Card";
 import Filtro from "../components/Generico/Filtro";
+import Modal from "./Modal";
+
 
 export default function Alimentacao() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
   const [subCategoria, setSubCategoria] = useState("Todos");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
+
 
   const categorias = ["Todos", "Restaurantes", "Padarias"];
+
+  const openModal = () => setIsModalOpen(true); // Função para abrir o modal
+  const closeModal = () => setIsModalOpen(false); // Função para fechar o modal
 
   return (
     <BaseLayoutTelas
@@ -23,7 +30,10 @@ export default function Alimentacao() {
         onCategoriaChange={setCategoria}
         onSubCategoriaChange={setSubCategoria}
         buttonText={"Anuncie seu negócio"}
+        onButtonClick={openModal}
       />
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
+
 
       {/* Sessão de Restaurantes */}
       <section className="mb-8">

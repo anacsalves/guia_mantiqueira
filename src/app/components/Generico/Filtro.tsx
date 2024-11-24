@@ -7,6 +7,7 @@ interface FiltroProps {
   onCategoriaChange: (categoria: string) => void; // Callback para selecionar categoria
   onSubCategoriaChange?: (subCategoria: string) => void; // Callback para subcategoria (opcional)
   buttonText: string; // Texto do botão
+  onButtonClick: () => void; // Função que será chamada ao clicar no botão
 }
 
 export default function Filtro({
@@ -16,6 +17,7 @@ export default function Filtro({
   onCategoriaChange,
   onSubCategoriaChange,
   buttonText,
+  onButtonClick, // Recebendo a função para abrir o modal
 }: FiltroProps) {
   return (
     <div className="flex flex-wrap items-center justify-between mb-8 p-4 shadow-sm">
@@ -58,9 +60,13 @@ export default function Filtro({
       </div>
 
       {/* Botão */}
-      <button className="bg-green-regular text-white px-6 py-2 rounded-2xl hover:bg-green-dark">
+      <button
+        onClick={onButtonClick} // Chama a função para abrir o modal ao clicar
+        className="bg-green-regular text-white px-6 py-2 rounded-2xl hover:bg-green-dark"
+      >
         {buttonText}
       </button>
     </div>
   );
 }
+

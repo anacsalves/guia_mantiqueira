@@ -1,23 +1,31 @@
-"use client"
+// pages/moradia.tsx
+'use client';
 
-import React, { useState } from "react";
+import { useState } from "react";
 import BaseLayoutTelas from "../components/Generico/BaseLayoutTelas";
 import Card from "../components/Generico/Card";
 import Filtro from "../components/Generico/Filtro";
+import Modal from "./Modal";
+
 
 export default function Moradia() {
   const [query, setQuery] = useState("");
   const [categoria, setCategoria] = useState("Todos");
   const [subCategoria, setSubCategoria] = useState("Todos");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
 
   const categorias = ["Todos", "Casas", "Pensões/Kitnets"];
   const subCategorias = ["Todos", "Aluguel", "Venda"];
+
+  const openModal = () => setIsModalOpen(true); // Função para abrir o modal
+  const closeModal = () => setIsModalOpen(false); // Função para fechar o modal
 
   return (
     <BaseLayoutTelas
       title="Moradia"
       description="Repúblicas, apartamentos, kitnets e pensões — opções para estudantes, famílias e turistas. Escolha o lar que combina com seu estilo de vida e sua necessidade."
     >
+      {/* Passando o botão "Anuncie sua vaga" que ao ser clicado abre o modal */}
       <Filtro
         categorias={categorias}
         subCategorias={subCategorias}
@@ -25,7 +33,11 @@ export default function Moradia() {
         onCategoriaChange={setCategoria}
         onSubCategoriaChange={setSubCategoria} 
         buttonText={"Anuncie sua vaga"}
+        onButtonClick={openModal} // Função que abre o modal
       />
+
+      {/* Modal que aparece quando o estado `isModalOpen` é verdadeiro */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
 
       {/* Sessão de Casas */}
       <section className="mb-8">

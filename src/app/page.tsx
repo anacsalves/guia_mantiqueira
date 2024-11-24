@@ -1,9 +1,9 @@
-import SessoesTelaInicial from "./components/TelaInicial/SessoesTelaInicial";
+import TelaInicial from "./components/TelaInicial";
 
 export default function Home() {
   return (
    <>
-      <SessoesTelaInicial />
+      <TelaInicial  />
    </>
   );
 }

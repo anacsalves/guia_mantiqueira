@@ -16,6 +16,10 @@ export default {
           regular: "#649181",
           dark: "#0D2223",
         },
+        gray: {
+          dark: "#4A4459",
+          light: "#848484"
+        }
       },
       fontFamily: {
         futuraLight: ['FuturaLight', 'sans-serif'],

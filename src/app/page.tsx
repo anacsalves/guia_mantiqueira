@@ -1,7 +1,9 @@
+import SessoesTelaInicial from "./components/TelaInicial/SessoesTelaInicial";
+
 export default function Home() {
   return (
    <>
-   <div>Início</div>
+      <SessoesTelaInicial />
    </>
   );
 }

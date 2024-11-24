@@ -11,11 +11,17 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        "green":{
-          "light": "#E2F5EE",
-          "regular": "#649181",
-          "dark": "#0D2223"
-        } 
+        green: {
+          light: "#E2F5EE",
+          regular: "#649181",
+          dark: "#0D2223",
+        },
+      },
+      fontFamily: {
+        futuraLight: ['FuturaLight', 'sans-serif'],
+        futuraMedium: ['FuturaMedium', 'sans-serif'],
+        futuraBold: ['FuturaBold', 'sans-serif'],
+        carolloMedium: ['CarolloMedium'],
       },
     },
   },

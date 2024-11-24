@@ -2,11 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Futura';
-  src: url('/mantiqueira/src/app/fonts/FuturaMediumCondensedBT.ttf') format('truetype'),
-       url('/mantiqueira/src/app/fonts/FuturaBold.ttf') format('truetype');
-  font-weight: 400; /* Ajuste conforme necessário */
-  font-style: normal; /* Ou 'italic', se aplicável */
+:root {
+  --font-futura-medium: 'Futura Medium', sans-serif;
+  --font-futura-bold: 'Futura Bold', sans-serif;
+  --font-futura-light: 'Futura Light', sans-serif; 
+  --font-carollo-medium: 'Carollo Medium', sans-serif; 
 }
 
+body {
+  font-family: var(--font-futura-light);
+  font-size: 20px; 
+}
+
+h1 {
+  font-family: var(--font-carollo-medium);
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1rem; 
+}
